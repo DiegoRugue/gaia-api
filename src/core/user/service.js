@@ -16,9 +16,14 @@ class UserService {
       throw new HttpError('User already exists', 409);
     }
 
-    const result = await UserRepository.create(user);
+    const { name } = await UserRepository.create(user);
 
-    return result;
+    return {
+      user: {
+        name,
+        email,
+      },
+    };
   }
 }
 
