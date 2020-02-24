@@ -15,5 +15,6 @@ routes.post('/session', SessionController.create);
 routes.use(auth);
 
 routes.post('/user', UserController.create);
+routes.put('/user', UserController.update);
 
 module.exports = routes;

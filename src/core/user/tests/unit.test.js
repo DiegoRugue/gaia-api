@@ -1,0 +1,84 @@
+const faker = require('faker');
+const { createUser } = require('./factory');
+const UserService = require('../service');
+const UserRepository = require('../repository');
+const HttpError = require('../../../helper/HttpError');
+
+jest.mock('../repository');
+
+describe('Unit user test', () => {
+  it('Should be admin for register users', async () => {
+    const user = await createUser();
+
+    UserRepository.create.mockImplementationOnce((user) => {
+      return user;
+    });
+
+    UserRepository.verifyAdmin.mockImplementationOnce(() => {
+      return false;
+    });
+
+    try {
+      await UserService.create(user);
+    } catch (err) {
+      expect(err).toBeInstanceOf(HttpError);
+      expect(err.message).toBe('Only admin can register users');
+      expect(err.code).toBe(401);
+    }
+  });
+
+  it('Should be user already exists', async () => {
+    const user = await createUser();
+
+    UserRepository.getByEmail.mockImplementationOnce(() => {
+      return user;
+    });
+
+    UserRepository.verifyAdmin.mockImplementationOnce(() => {
+      return true;
+    });
+
+    try {
+      await UserService.create(user);
+    } catch (err) {
+      expect(err).toBeInstanceOf(HttpError);
+      expect(err.message).toBe('User already exists');
+      expect(err.code).toBe(409);
+    }
+  });
+
+  it('Should be User recently deleted', async () => {
+    const user = await createUser();
+
+    UserRepository.getById.mockImplementationOnce(() => {
+      return false;
+    });
+
+    try {
+      await UserService.update(user);
+    } catch (err) {
+      expect(err).toBeInstanceOf(HttpError);
+      expect(err.message).toBe('User recently deleted');
+      expect(err.code).toBe(400);
+    }
+  });
+
+  it("Should be Password doesn't match", async () => {
+    const user = await createUser();
+    user.oldPassword = faker.internet.password();
+
+    UserRepository.getById.mockImplementationOnce(() => {
+      return {
+        checkPassword() { return false }
+      };
+    });
+
+    try {
+      await UserService.update(user);
+    } catch (err) {
+      expect(err).toBeInstanceOf(HttpError);
+      expect(err.message).toBe("Password doesn't match");
+      expect(err.code).toBe(400);
+    }
+  });
+});

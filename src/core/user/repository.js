@@ -23,6 +23,20 @@ class UserRepository {
 
     return admin;
   }
+
+  static async getById(id) {
+    const user = User.findOne({
+      where: { id },
+    });
+
+    return user;
+  }
+
+  static async update(userData, id) {
+    const user = User.update(userData, { where: id });
+
+    return user;
+  }
 }
 
 module.exports = UserRepository;

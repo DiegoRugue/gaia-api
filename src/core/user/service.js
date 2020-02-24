@@ -25,6 +25,29 @@ class UserService {
       },
     };
   }
+
+  static async update(userData, id) {
+    const user = await UserRepository.getById(id);
+
+    if (!user) {
+      throw new HttpError('User recently deleted', 400);
+    }
+
+    const { oldPassword } = userData;
+
+    if (oldPassword && !(await user.checkPassword(oldPassword))) {
+      throw new HttpError("Password doesn't match", 400);
+    }
+
+    const { name, email } = UserRepository.update(id, userData);
+
+    return {
+      user: {
+        name,
+        email,
+      },
+    };
+  }
 }
 
 module.exports = UserService;
