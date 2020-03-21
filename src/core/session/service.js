@@ -3,12 +3,13 @@ const HttpError = require('../../utils/errors/HttpError');
 const SessionRepository = require('./repository');
 
 function generateToken(user) {
-  const { id, name, email } = user;
+  const { id, name, email, admin } = user;
 
   return {
     user: {
       name,
       email,
+      admin,
     },
     token: jwt.sign({ id }, process.env.SECRET_KEY, {
       expiresIn: '1d',
