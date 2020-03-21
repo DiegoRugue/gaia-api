@@ -7,7 +7,7 @@ jest.mock('../repository');
 
 describe('Unit user test', () => {
   it('Should be admin for register users', async () => {
-    const user = await createUser();
+    const user = createUser();
 
     UserRepository.create.mockImplementationOnce((user) => {
       return user;
@@ -26,7 +26,7 @@ describe('Unit user test', () => {
   });
 
   it('Should be user already exists', async () => {
-    const user = await createUser();
+    const user = createUser();
 
     UserRepository.getByEmail.mockImplementationOnce(() => {
       return user;
@@ -45,7 +45,7 @@ describe('Unit user test', () => {
   });
 
   it('Should be User recently deleted', async () => {
-    const user = await createUser();
+    const user = createUser();
 
     UserRepository.getById.mockImplementationOnce(() => {
       return false;
@@ -60,7 +60,7 @@ describe('Unit user test', () => {
   });
 
   it("Should be Password doesn't match", async () => {
-    const user = await createUser();
+    const user = createUser();
     user.oldPassword = faker.internet.password();
 
     UserRepository.getById.mockImplementationOnce(() => {

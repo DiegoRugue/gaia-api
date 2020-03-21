@@ -6,6 +6,12 @@ class SessionController {
 
     res.ok(session);
   }
+
+  static async update(req, res) {
+    const session = await SessionService.update(req.userId);
+
+    res.ok(session);
+  }
 }
 
 module.exports = SessionController;

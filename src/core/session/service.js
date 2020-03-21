@@ -2,6 +2,20 @@ const jwt = require('jsonwebtoken');
 const HttpError = require('../../utils/errors/HttpError');
 const SessionRepository = require('./repository');
 
+function generateToken(user) {
+  const { id, name, email } = user;
+
+  return {
+    user: {
+      name,
+      email,
+    },
+    token: jwt.sign({ id }, process.env.SECRET_KEY, {
+      expiresIn: '1d',
+    }),
+  };
+}
+
 class SessionService {
   static async create(session) {
     const { email, password } = session;
@@ -12,17 +26,17 @@ class SessionService {
       throw new HttpError('Email or password not match', 400);
     }
 
-    const { id, name } = user;
+    return generateToken(user);
+  }
 
-    return {
-      user: {
-        name,
-        email,
-      },
-      token: jwt.sign({ id }, process.env.SECRET_KEY, {
-        expiresIn: '1d',
-      }),
-    };
+  static async update(id) {
+    const user = await SessionRepository.findUserById(id);
+
+    if (!user) {
+      throw new HttpError('User not exists', 400);
+    }
+
+    return generateToken(user);
   }
 }
 

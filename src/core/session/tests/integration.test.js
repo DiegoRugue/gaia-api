@@ -11,11 +11,8 @@ describe('Integration session test', () => {
   });
 
   it('Should be created session', async () => {
-    const user = await createUser();
-
-    const { id } = await User.create(user);
-
-    const { email, password } = user;
+    const userData = createUser();
+    const { id, name, email, password } = await User.create(userData);
 
     const response = await request(app)
       .post('/api/session')
@@ -25,9 +22,30 @@ describe('Integration session test', () => {
       });
 
     const userToken = generateUserToken(id);
-    const { body: { token } } = response;
+    const { body: { token, user } } = response;
 
     expect(response.status).toBe(200);
     expect(token).toBe(userToken);
+    expect(user.name).toBe(name);
+    expect(user.email).toBe(email);
+  });
+
+  it('Should be updated session', async () => {
+    const userData = createUser();
+    const { id, name, email } = await User.create(userData);
+    
+    const userToken = generateUserToken(id);
+
+    const response = await request(app)
+      .put('/api/session')
+      .set('Authorization',`bearer ${userToken}`)
+      .send();
+
+    const { body: { token, user } } = response;
+
+    expect(response.status).toBe(200);
+    expect(token).toBe(userToken);
+    expect(user.name).toBe(name);
+    expect(user.email).toBe(email);
   });
 });

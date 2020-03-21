@@ -6,6 +6,12 @@ class SessionRepository {
 
     return user;
   }
+
+  static async findUserById(id) {
+    const user = await User.findByPk(id);
+
+    return user;
+  }
 }
 
 module.exports = SessionRepository;

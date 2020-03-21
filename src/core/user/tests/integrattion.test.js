@@ -11,11 +11,11 @@ describe('Integration user test', () => {
   });
 
   it('Should be created user', async () => {
-    const admin = await createAdmin();
+    const admin = createAdmin();
     const { id } = await User.create(admin);
     const token = generateToken(id);
 
-    const user = await createUser();
+    const user = createUser();
 
     const response = await request(app)
       .post('/api/user')
@@ -26,13 +26,13 @@ describe('Integration user test', () => {
   });
 
   it('Should be updated user', async () => {
-    const attrsUser = await createUser();
+    const attrsUser = createUser();
     const user = await User.create(attrsUser);
 
     const { id } = user;
     const token = generateToken(id);
 
-    let newAttrsUser = await createUser();
+    let newAttrsUser = createUser();
     newAttrsUser.oldPassword = user.password;
 
     const response = await request(app)
