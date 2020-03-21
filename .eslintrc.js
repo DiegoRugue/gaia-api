@@ -17,5 +17,6 @@ module.exports = {
   rules: {
     'arrow-parens': 'off',
     'no-param-reassign': 'off',
+    'linebreak-style': 'off'
   },
 };
