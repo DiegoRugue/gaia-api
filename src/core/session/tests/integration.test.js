@@ -1,9 +1,9 @@
 const request = require('supertest');
 
-const { createUser, generateUserToken } = require('./factory');
-const User = require('../../user');
+const { createUser, generateUserToken } = require('./helper');
+const User = require('../../user/model');
 const app = require('../../../app');
-const truncate = require('../../../database/truncate');
+const truncate = require('../../../utils/db/truncate');
 
 describe('Integration session test', () => {
   beforeEach(async () => {

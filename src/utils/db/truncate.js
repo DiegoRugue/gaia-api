@@ -1,4 +1,4 @@
-const database = require('../../src/database');
+const database = require('../../database');
 
 module.exports = function truncate() {
   return Promise.all(

@@ -1,4 +1,4 @@
-const User = require('../user');
+const User = require('../user/model');
 
 class SessionRepository {
   static async findUserByEmail(email) {

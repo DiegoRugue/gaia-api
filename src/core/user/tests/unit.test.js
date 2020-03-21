@@ -1,8 +1,7 @@
 const faker = require('faker');
-const { createUser } = require('./factory');
+const { createUser } = require('./helper');
 const UserService = require('../service');
 const UserRepository = require('../repository');
-const HttpError = require('../../../helper/HttpError');
 
 jest.mock('../repository');
 
@@ -21,7 +20,6 @@ describe('Unit user test', () => {
     try {
       await UserService.create(user);
     } catch (err) {
-      expect(err).toBeInstanceOf(HttpError);
       expect(err.message).toBe('Only admin can register users');
       expect(err.code).toBe(401);
     }
@@ -41,7 +39,6 @@ describe('Unit user test', () => {
     try {
       await UserService.create(user);
     } catch (err) {
-      expect(err).toBeInstanceOf(HttpError);
       expect(err.message).toBe('User already exists');
       expect(err.code).toBe(409);
     }
@@ -57,7 +54,6 @@ describe('Unit user test', () => {
     try {
       await UserService.update(user);
     } catch (err) {
-      expect(err).toBeInstanceOf(HttpError);
       expect(err.message).toBe('User recently deleted');
       expect(err.code).toBe(400);
     }
@@ -76,7 +72,6 @@ describe('Unit user test', () => {
     try {
       await UserService.update(user);
     } catch (err) {
-      expect(err).toBeInstanceOf(HttpError);
       expect(err.message).toBe("Password doesn't match");
       expect(err.code).toBe(400);
     }

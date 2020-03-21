@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const faker = require('faker');
 const { factory } = require('factory-girl');
-const User = require('..');
+const User = require('../model');
 
 const userFactory = factory.define('User', User, {
   name: faker.name.findName(),

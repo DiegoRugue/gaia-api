@@ -1,7 +1,6 @@
-const { createSession } = require('./factory');
+const { createSession } = require('./helper');
 const SessionService = require('../service');
 const SessionRepository = require('../repository');
-const HttpError = require('../../../helper/HttpError');
 
 jest.mock('../repository');
 
@@ -16,7 +15,6 @@ describe('Unit session test', () => {
     try {
       await SessionService.create(session);
     } catch (err) {
-      expect(err).toBeInstanceOf(HttpError);
       expect(err.message).toBe('Email or password not match');
       expect(err.code).toBe(400);
     }

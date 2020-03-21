@@ -1,9 +1,9 @@
 const request = require('supertest');
 
-const User = require('..');
-const { createUser, generateToken, createAdmin } = require('./factory');
+const User = require('../model');
+const { createUser, generateToken, createAdmin } = require('./helper');
 const app = require('../../../app');
-const truncate = require('../../../database/truncate');
+const truncate = require('../../../utils/db/truncate');
 
 describe('Integration user test', () => {
   beforeEach(async () => {
@@ -43,5 +43,3 @@ describe('Integration user test', () => {
     expect(response.status).toBe(200);
   });
 });
-
-

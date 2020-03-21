@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const HttpError = require('../../helper/HttpError');
+const HttpError = require('../../utils/errors/HttpError');
 const SessionRepository = require('./repository');
 
 class SessionService {
