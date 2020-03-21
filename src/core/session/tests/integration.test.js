@@ -28,6 +28,7 @@ describe('Integration session test', () => {
     expect(token).toBe(userToken);
     expect(user.name).toBe(name);
     expect(user.email).toBe(email);
+    expect(user.admin).toBe(false);
   });
 
   it('Should be updated session', async () => {
@@ -47,5 +48,6 @@ describe('Integration session test', () => {
     expect(token).toBe(userToken);
     expect(user.name).toBe(name);
     expect(user.email).toBe(email);
+    expect(user.admin).toBe(false);
   });
 });
