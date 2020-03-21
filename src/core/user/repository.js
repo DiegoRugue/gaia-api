@@ -1,4 +1,4 @@
-const User = require('.');
+const User = require('./model');
 
 class UserRepository {
   static async create(user) {

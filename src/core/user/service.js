@@ -1,4 +1,4 @@
-const HttpError = require('../../helper/HttpError');
+const HttpError = require('../../utils/errors/HttpError');
 const UserRepository = require('./repository');
 
 class UserService {
