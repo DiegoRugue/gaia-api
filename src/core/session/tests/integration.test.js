@@ -13,7 +13,7 @@ describe('Integration session test', () => {
   it('Should be created session', async () => {
     const userData = createUser();
     const { id, name, email, password } = await User.create(userData);
-    
+
     const response = await request(app)
       .post('/api/session')
       .send({
@@ -34,11 +34,11 @@ describe('Integration session test', () => {
   it('Should be updated session', async () => {
     const userData = createUser();
     const { id, name, email } = await User.create(userData);
-    
+
     const userToken = generateUserToken(id);
 
     const response = await request(app)
-      .put('/api/session')
+      .get('/api/session')
       .set('Authorization',`bearer ${userToken}`)
       .send();
 

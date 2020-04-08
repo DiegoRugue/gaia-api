@@ -14,7 +14,7 @@ routes.post('/session', SessionController.create);
 
 routes.use(auth);
 
-routes.put('/session', SessionController.update);
+routes.get('/session', SessionController.refresh);
 
 routes.get('/user', UserController.index);
 routes.post('/user', UserController.create);
