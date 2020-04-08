@@ -13,7 +13,7 @@ describe('Integration session test', () => {
   it('Should be created session', async () => {
     const userData = createUser();
     const { id, name, email, password } = await User.create(userData);
-
+    
     const response = await request(app)
       .post('/api/session')
       .send({

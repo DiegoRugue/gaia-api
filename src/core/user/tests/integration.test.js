@@ -10,6 +10,19 @@ describe('Integration user test', () => {
     await truncate();
   });
 
+  it('Should be list all users', async () => {
+    const admin = createAdmin();
+    const { id } = await User.create(admin);
+    const token = generateToken(id);
+
+    const response = await request(app)
+      .get('/api/user')
+      .set('Authorization',`bearer ${token}`)
+      .send()
+
+      expect(response.status).toBe(200);
+  });
+
   it('Should be created user', async () => {
     const admin = createAdmin();
     const { id } = await User.create(admin);
@@ -41,5 +54,21 @@ describe('Integration user test', () => {
       .send(newAttrsUser);
 
     expect(response.status).toBe(200);
+  });
+
+  it('Should be user deleted', async () => {
+    const admin = createAdmin();
+    const { id } = await User.create(admin);
+    const token = generateToken(id);
+
+    const response = await request(app)
+      .delete(`/api/user/${id}`)
+      .set('Authorization',`bearer ${token}`)
+      .send()
+
+      const user = await User.findByPk(id);
+
+      expect(response.status).toBe(200)
+      expect(user).toBe(null);
   });
 });

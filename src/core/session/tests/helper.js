@@ -6,6 +6,7 @@ function createUser() {
     name: faker.name.findName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
+    admin: false,
   };
 }
 

@@ -1,6 +1,16 @@
 const User = require('./model');
 
 class UserRepository {
+  static async index(page) {
+    const users = await User.findAll({
+      limit: 10,
+      offset: page,
+      attributes: ['id', 'name', 'email'],
+    });
+
+    return { users: { users } };
+  }
+
   static async create(user) {
     const result = await User.create(user);
 
@@ -25,7 +35,7 @@ class UserRepository {
   }
 
   static async getById(id) {
-    const user = User.findOne({
+    const user = await User.findOne({
       where: { id },
     });
 
@@ -33,9 +43,17 @@ class UserRepository {
   }
 
   static async update(userData, id) {
-    const user = User.update(userData, { where: id });
+    const user = await User.update(userData, { where: id });
 
     return user;
+  }
+
+  static async destroy(id) {
+    await User.destroy({
+      where: {
+        id,
+      },
+    });
   }
 }
 
