@@ -17,7 +17,7 @@ class UserService {
 
     const users = await UserRepository.index(page);
 
-    return { users: { users } };
+    return { users };
   }
 
   static async create(user, userId) {
