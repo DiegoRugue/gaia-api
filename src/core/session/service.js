@@ -7,6 +7,7 @@ function generateToken(user) {
 
   return {
     user: {
+      id,
       name,
       email,
       admin,
