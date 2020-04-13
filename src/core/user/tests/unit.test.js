@@ -20,7 +20,7 @@ describe('Unit user test', () => {
     try {
       await UserService.create(user);
     } catch (err) {
-      expect(err.message).toBe('Only admin can register users');
+      expect(err.message).toBe('Only admin users have access to this service');
       expect(err.code).toBe(401);
     }
   });
@@ -66,6 +66,12 @@ describe('Unit user test', () => {
     UserRepository.getById.mockImplementationOnce(() => {
       return {
         checkPassword() { return false }
+      };
+    });
+
+    UserRepository.verifyAdmin.mockImplementationOnce(() => {
+      return {
+        checkPassword() { return true }
       };
     });
 

@@ -8,7 +8,7 @@ class UserRepository {
       attributes: ['id', 'name', 'email'],
     });
 
-    return { users: { users } };
+    return users;
   }
 
   static async create(user) {

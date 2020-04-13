@@ -16,7 +16,7 @@ describe('Integration user test', () => {
     const token = generateToken(id);
 
     const response = await request(app)
-      .get('/api/user')
+      .get('/api/users')
       .set('Authorization',`bearer ${token}`)
       .send()
 
@@ -40,18 +40,17 @@ describe('Integration user test', () => {
 
   it('Should be updated user', async () => {
     const attrsUser = createUser();
-    const user = await User.create(attrsUser);
+    const { id, password } = await User.create(attrsUser);
 
-    const { id } = user;
     const token = generateToken(id);
 
     let newAttrsUser = createUser();
-    newAttrsUser.oldPassword = user.password;
+    newAttrsUser.oldPassword = password;
 
     const response = await request(app)
       .put('/api/user')
       .set('Authorization',`bearer ${token}`)
-      .send(newAttrsUser);
+      .send({ id, ...newAttrsUser });
 
     expect(response.status).toBe(200);
   });

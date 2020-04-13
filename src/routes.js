@@ -16,9 +16,9 @@ routes.use(auth);
 
 routes.get('/session', SessionController.refresh);
 
-routes.get('/user', UserController.index);
+routes.get('/users', UserController.index);
 routes.post('/user', UserController.create);
 routes.put('/user', UserController.update);
-routes.delete('/user/:id', UserController.destoy);
+routes.delete('/user/:id', UserController.destroy);
 
 module.exports = routes;

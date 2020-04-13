@@ -1,15 +1,29 @@
 const HttpError = require('../../utils/errors/HttpError');
 const UserRepository = require('./repository');
 
+async function verifyAdmin(id) {
+  const isAdmin = await UserRepository.verifyAdmin(id);
+
+  if (!isAdmin) {
+    throw new HttpError('Only admin users have access to this service', 401);
+  }
+
+  return true;
+}
+
 class UserService {
+  static async index(page, userId) {
+    await verifyAdmin(userId);
+
+    const users = await UserRepository.index(page);
+
+    return { users: { users } };
+  }
+
   static async create(user, userId) {
     const { email } = user;
 
-    const isAdmin = await UserRepository.verifyAdmin(userId);
-
-    if (!isAdmin) {
-      throw new HttpError('Only admin can register users', 401);
-    }
+    await verifyAdmin(userId);
 
     const userExists = await UserRepository.getByEmail(email);
     if (userExists) {
@@ -26,14 +40,14 @@ class UserService {
     };
   }
 
-  static async update(userData, id) {
+  static async update(userData) {
+    const { id, oldPassword } = userData;
+
     const user = await UserRepository.getById(id);
 
     if (!user) {
       throw new HttpError('User recently deleted', 400);
     }
-
-    const { oldPassword } = userData;
 
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       throw new HttpError("Password doesn't match", 400);
@@ -47,6 +61,11 @@ class UserService {
         email,
       },
     };
+  }
+
+  static async destroy(id, userId) {
+    await verifyAdmin(userId);
+    await UserRepository.destroy(id);
   }
 }
 

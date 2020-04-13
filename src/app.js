@@ -14,6 +14,7 @@ class App {
     this.server = express();
     this.midllewares();
     this.routes();
+    this.exceptionHandler();
   }
 
   midllewares() {
@@ -31,7 +32,7 @@ class App {
   exceptionHandler() {
     // eslint-disable-next-line no-unused-vars
     this.server.use(async (err, req, res, next) => {
-      if (err.message && err.code) {
+      if (err.name === 'HttpError') {
         res.error(err.message, err.code);
       } else if (process.env.NODE_ENV !== 'prod') {
         const errors = await new Youch(err, req).toJSON();
