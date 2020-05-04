@@ -8,6 +8,13 @@ class UserController {
     res.ok(users);
   }
 
+  static async show(req, res) {
+    const { params: { id }, userId } = req;
+    const user = await UserService.show(id, userId);
+
+    res.ok(user);
+  }
+
   static async create(req, res) {
     const { body, userId } = req;
     const user = await UserService.create(body, userId);
@@ -16,8 +23,8 @@ class UserController {
   }
 
   static async update(req, res) {
-    const { body } = req;
-    const user = await UserService.update(body);
+    const { body, userId } = req;
+    const user = await UserService.update(body, userId);
 
     res.ok(user);
   }

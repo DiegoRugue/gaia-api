@@ -18,9 +18,32 @@ describe('Integration user test', () => {
     const response = await request(app)
       .get('/api/users')
       .set('Authorization',`bearer ${token}`)
-      .send()
+      .send();
 
-      expect(response.status).toBe(200);
+    const { users: [ user ]} = response.body;
+
+    expect(response.status).toBe(200);
+    expect(user.id).toBe(id);
+    expect(user.name).toBe(admin.name);
+    expect(user.email).toBe(admin.email);
+  });
+
+  it('Should be show user', async () => {
+    const admin = createAdmin();
+    const { id } = await User.create(admin);
+    const token = generateToken(id);
+
+    const response = await request(app)
+      .get(`/api/users/${id}`)
+      .set('Authorization',`bearer ${token}`)
+      .send();
+
+    const { user } = response.body;
+
+    expect(response.status).toBe(200);
+    expect(user.id).toBe(id);
+    expect(user.name).toBe(admin.name);
+    expect(user.email).toBe(admin.email);
   });
 
   it('Should be created user', async () => {
@@ -31,11 +54,17 @@ describe('Integration user test', () => {
     const user = createUser();
 
     const response = await request(app)
-      .post('/api/user')
+      .post('/api/users')
       .set('Authorization',`bearer ${token}`)
       .send(user);
 
+    const { user: userRes } = response.body;
+    const { id: idCreated } = await User.findOne({ where: { email: user.email } });
+
     expect(response.status).toBe(201);
+    expect(userRes.id).toBe(idCreated);
+    expect(userRes.name).toBe(user.name);
+    expect(userRes.email).toBe(user.email);
   });
 
   it('Should be updated user', async () => {
@@ -48,11 +77,19 @@ describe('Integration user test', () => {
     newAttrsUser.oldPassword = password;
 
     const response = await request(app)
-      .put('/api/user')
+      .put('/api/users')
       .set('Authorization',`bearer ${token}`)
       .send({ id, ...newAttrsUser });
 
+    const { user } = response.body;
+    const updatedUser = await User.findByPk(id);
+    const changedPassword = await updatedUser.checkPassword(newAttrsUser.password);
+
     expect(response.status).toBe(200);
+    expect(user.id).toBe(id);
+    expect(user.name).toBe(newAttrsUser.name);
+    expect(user.email).toBe(newAttrsUser.email);
+    expect(changedPassword).toBe(true);
   });
 
   it('Should be user deleted', async () => {
@@ -61,13 +98,13 @@ describe('Integration user test', () => {
     const token = generateToken(id);
 
     const response = await request(app)
-      .delete(`/api/user/${id}`)
+      .delete(`/api/users/${id}`)
       .set('Authorization',`bearer ${token}`)
-      .send()
+      .send();
 
-      const user = await User.findByPk(id);
+    const user = await User.findByPk(id);
 
-      expect(response.status).toBe(200)
-      expect(user).toBe(null);
+    expect(response.status).toBe(200);
+    expect(user).toBe(null);
   });
 });

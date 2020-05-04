@@ -11,6 +11,12 @@ class UserRepository {
     return users;
   }
 
+  static async show(id) {
+    const user = await User.findByPk(id, { attributes: ['id', 'name', 'email'] });
+
+    return user;
+  }
+
   static async create(user) {
     const result = await User.create(user);
 
@@ -38,12 +44,6 @@ class UserRepository {
     const user = await User.findOne({
       where: { id },
     });
-
-    return user;
-  }
-
-  static async update(userData, id) {
-    const user = await User.update(userData, { where: id });
 
     return user;
   }

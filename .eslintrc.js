@@ -18,6 +18,7 @@ module.exports = {
     'arrow-parens': 'off',
     'no-param-reassign': 'off',
     'linebreak-style': 'off',
-    'object-curly-newline': 'off'
+    'object-curly-newline': 'off',
+    'eqeqeq': 'off'
   },
 };

@@ -18,9 +18,9 @@ describe('Unit user test', () => {
     });
 
     try {
-      await UserService.create(user);
+      await UserService.create(user, 1);
     } catch (err) {
-      expect(err.message).toBe('Only admin users have access to this service');
+      expect(err.message).toBe('Only the owner or administrator user has access to this feature');
       expect(err.code).toBe(401);
     }
   });
@@ -79,6 +79,37 @@ describe('Unit user test', () => {
       await UserService.update(user);
     } catch (err) {
       expect(err.message).toBe("Password doesn't match");
+      expect(err.code).toBe(400);
+    }
+  });
+
+  it("Should be Email already exists try another one", async () => {
+    const user = createUser();
+    user.oldPassword = faker.internet.password();
+
+    UserRepository.getById.mockImplementationOnce(() => {
+      return {
+        email: 'teste@teste.com',
+        checkPassword() { return true }
+      };
+    });
+
+    UserRepository.verifyAdmin.mockImplementationOnce(() => {
+      return {
+        checkPassword() { return true }
+      };
+    });
+
+    UserRepository.getByEmail.mockImplementationOnce(email => {
+      return {
+        email,
+      }
+    });
+
+    try {
+      await UserService.update(user);
+    } catch (err) {
+      expect(err.message).toBe("Email already exists try another one");
       expect(err.code).toBe(400);
     }
   });

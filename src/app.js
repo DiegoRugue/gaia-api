@@ -1,4 +1,6 @@
 const express = require('express');
+require('express-async-errors');
+
 const Sentry = require('@sentry/node');
 const Youch = require('youch');
 const cors = require('cors');
@@ -7,10 +9,10 @@ const response = require('./middlewares/response');
 
 require('./bootstrap');
 require('./database');
-require('express-async-errors');
 
 class App {
   constructor() {
+    Sentry.init({ dsn: process.env.DSN });
     this.server = express();
     this.midllewares();
     this.routes();
@@ -35,11 +37,11 @@ class App {
       if (err.name === 'HttpError') {
         res.error(err.message, err.code);
       } else if (process.env.NODE_ENV !== 'prod') {
-        const errors = await new Youch(err, req).toJSON();
+        const { error } = await new Youch(err, req).toJSON();
 
-        res.error(500, errors);
+        res.error(error.message);
       } else {
-        res.error(500, 'Ops! Erro no servidor, já estamos trabalhando para corrigir!');
+        res.error('Ops! Erro no servidor, já estamos trabalhando para corrigir!');
       }
     });
   }
