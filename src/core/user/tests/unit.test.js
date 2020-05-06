@@ -2,6 +2,7 @@ const faker = require('faker');
 const { createUser } = require('./helper');
 const UserService = require('../service');
 const UserRepository = require('../repository');
+const UserScope = require('../scope');
 
 jest.mock('../repository');
 
@@ -110,6 +111,18 @@ describe('Unit user test', () => {
       await UserService.update(user);
     } catch (err) {
       expect(err.message).toBe("Email already exists try another one");
+      expect(err.code).toBe(400);
+    }
+  });
+
+  it('Should be user validated', async () => {
+    try {
+      await UserScope.create({
+        name: faker.name.findName(),
+        email: faker.internet.email()
+      });
+    } catch (err) {
+      expect(err.message).toBe('password is a required field');
       expect(err.code).toBe(400);
     }
   });

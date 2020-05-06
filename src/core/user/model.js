@@ -18,7 +18,9 @@ class User extends Sequelize.Model {
     );
 
     this.addHook('beforeSave', async user => {
-      user.password_hash = await hash(user.password, 8);
+      if (user.password) {
+        user.password_hash = await hash(user.password, 8);
+      }
 
       return this;
     });

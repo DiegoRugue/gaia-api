@@ -54,7 +54,7 @@ class UserService {
   }
 
   static async update(userData, userId) {
-    const { id, name, oldPassword, email } = userData;
+    const { id, oldPassword, email } = userData;
 
     await verifyUserAccess(userId, id);
 
@@ -68,7 +68,7 @@ class UserService {
       throw new HttpError("Password doesn't match", 400);
     }
 
-    if (email !== user.email && await UserRepository.getByEmail(email)) {
+    if (email && email !== user.email && await UserRepository.getByEmail(email)) {
       throw new HttpError('Email already exists try another one', 400);
     }
 
@@ -77,8 +77,8 @@ class UserService {
     return {
       user: {
         id,
-        name,
-        email,
+        name: user.name,
+        email: user.email,
       },
     };
   }

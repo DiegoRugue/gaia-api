@@ -1,4 +1,5 @@
 const UserService = require('./service');
+const UserScope = require('./scope');
 
 class UserController {
   static async index(req, res) {
@@ -17,6 +18,8 @@ class UserController {
 
   static async create(req, res) {
     const { body, userId } = req;
+    await UserScope.create(body);
+
     const user = await UserService.create(body, userId);
 
     res.create(user);
@@ -24,6 +27,7 @@ class UserController {
 
   static async update(req, res) {
     const { body, userId } = req;
+    await UserScope.update(body);
     const user = await UserService.update(body, userId);
 
     res.ok(user);
