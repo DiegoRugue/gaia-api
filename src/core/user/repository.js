@@ -12,7 +12,7 @@ class UserRepository {
   }
 
   static async show(id) {
-    const user = await User.findByPk(id, { attributes: ['id', 'name', 'email'] });
+    const user = await User.findByPk(id, { attributes: ['id', 'name', 'email', 'admin'] });
 
     return user;
   }

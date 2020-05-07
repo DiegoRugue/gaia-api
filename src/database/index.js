@@ -2,8 +2,9 @@ const Sequelize = require('sequelize');
 const config = require('../config/database');
 
 const User = require('../core/user/model');
+const TypesDishes = require('../core/typeDish/model');
 
-const models = [User];
+const models = [User, TypesDishes];
 
 class Database {
   constructor() {
