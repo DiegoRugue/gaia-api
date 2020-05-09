@@ -2,9 +2,12 @@ const Sequelize = require('sequelize');
 const config = require('../config/database');
 
 const User = require('../core/user/model');
-const TypesDishes = require('../core/typeDish/model');
+const TypeDish = require('../core/typeDish/model');
+const Dish = require('../core/dish/model');
+const Menu = require('../core/menu/model');
+const MenuDish = require('../core/menuDish/model');
 
-const models = [User, TypesDishes];
+const models = [User, TypeDish, Dish, Menu, MenuDish];
 
 class Database {
   constructor() {
@@ -14,7 +17,8 @@ class Database {
   init() {
     this.connection = new Sequelize(config);
 
-    models.map(model => model.init(this.connection));
+    models.forEach(model => model.init(this.connection));
+    models.forEach(model => model.associate && model.associate(this.connection.models));
   }
 }
 

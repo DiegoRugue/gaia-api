@@ -5,6 +5,7 @@ const ping = require('./core/ping');
 
 const UserController = require('./core/user/controller');
 const SessionController = require('./core/session/controller');
+const DishController = require('./core/dish/controller');
 
 const routes = new Router();
 
@@ -21,5 +22,7 @@ routes.get('/users/:id', UserController.show);
 routes.post('/users', UserController.create);
 routes.put('/users', UserController.update);
 routes.delete('/users/:id', UserController.destroy);
+
+routes.get('/dishes', DishController.index);
 
 module.exports = routes;

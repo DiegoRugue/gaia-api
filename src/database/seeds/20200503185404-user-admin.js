@@ -6,7 +6,7 @@ module.exports = {
       {
         name: 'Diego Admin',
         email: 'diego@teste.com',
-        password_hash: hashSync('1234', 8),
+        password_hash: hashSync('12345', 8),
         admin: true,
         created_at: new Date(),
       },

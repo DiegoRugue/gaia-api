@@ -1,5 +1,5 @@
 module.exports = {
-  up: queryInterface => queryInterface.bulkInsert('types_dishes',
+  up: queryInterface => queryInterface.bulkInsert('type_dishes',
     [
       {
         name: 'Prato Principal',
@@ -10,10 +10,14 @@ module.exports = {
         created_at: new Date(),
       },
       {
+        name: 'Salada',
+        created_at: new Date(),
+      },
+      {
         name: 'Sobremesa',
         created_at: new Date(),
       },
     ], {}),
 
-  down: queryInterface => queryInterface.bulkDelete('types_dishes', null, {}),
+  down: queryInterface => queryInterface.bulkDelete('type_dishes', null, {}),
 };

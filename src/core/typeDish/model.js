@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-class TypesDishes extends Sequelize.Model {
+class TypeDish extends Sequelize.Model {
   static init(sequelize) {
     super.init(
       {
@@ -13,4 +13,4 @@ class TypesDishes extends Sequelize.Model {
   }
 }
 
-module.exports = TypesDishes;
+module.exports = TypeDish;
