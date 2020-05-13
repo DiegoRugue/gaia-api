@@ -22,6 +22,12 @@ class DishRepository {
 
     return dishes;
   }
+
+  static async findOrCreate({ name, type: typeDishId }) {
+    const [dish] = await Dish.findOrCreate({ where: { name, typeDishId } });
+
+    return dish;
+  }
 }
 
 module.exports = DishRepository;

@@ -18,6 +18,18 @@ class DishService {
 
     return dishes;
   }
+
+  static async create(userId, dataDish) {
+    await verifyAdmin(userId);
+
+    const { id, name, type } = await DishRepository.findOrCreate(dataDish);
+
+    return {
+      id,
+      name,
+      type,
+    };
+  }
 }
 
 module.exports = DishService;
