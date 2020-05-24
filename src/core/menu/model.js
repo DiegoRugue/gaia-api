@@ -13,7 +13,7 @@ class Menu extends Sequelize.Model {
   }
 
   static associate(models) {
-    this.belongsToMany(models.Dish, { through: 'MenuDish', foreignKey: 'dishId', as: 'dish' });
+    this.belongsToMany(models.Dish, { through: 'MenuDishes', foreignKey: 'dishId', as: 'dishes' });
   }
 }
 

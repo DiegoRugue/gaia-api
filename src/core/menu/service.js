@@ -1,5 +1,9 @@
+/* eslint-disable guard-for-in */
+const Sequelize = require('sequelize');
 const { startOfWeek, endOfWeek, addDays } = require('date-fns');
+const config = require('../../config/database');
 const MenuRepository = require('./repository');
+const DishRepository = require('../dish/repository');
 
 class MenuService {
   static async index() {
@@ -14,6 +18,27 @@ class MenuService {
     }
 
     return menus;
+  }
+
+  static async addDishesToMenu(menuData) {
+    const sequelize = new Sequelize(config);
+    const result = await sequelize.transaction(async transaction => {
+      const { id, dishes } = menuData;
+
+      const dishPromisses = [];
+      dishes.forEach(dish => dishPromisses.push(DishRepository.findOrCreate(dish)));
+
+      let menu = await MenuRepository.findById(id);
+
+      const dishesMenu = await Promise.all(dishPromisses);
+
+      await menu.addDish(dishesMenu, { transaction });
+
+      menu = await MenuRepository.findMenuWithDishById(id, transaction);
+
+      return menu;
+    });
+    return result;
   }
 
   static async createMenusOfWeek(start, end) {

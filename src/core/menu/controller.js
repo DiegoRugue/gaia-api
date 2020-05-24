@@ -6,6 +6,12 @@ class Menu {
 
     res.ok(menus);
   }
+
+  static async addDishesToMenu(req, res) {
+    const menu = await MenuService.addDishesToMenu(req.body);
+
+    res.ok(menu);
+  }
 }
 
 module.exports = Menu;

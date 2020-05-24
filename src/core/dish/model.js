@@ -14,7 +14,7 @@ class Dish extends Sequelize.Model {
 
   static associate(models) {
     this.belongsTo(models.TypeDish, { foreignKey: 'typeDishId', as: 'type' });
-    this.belongsToMany(models.Menu, { through: 'MenuDish', foreignKey: 'menuId', as: 'menu' });
+    this.belongsToMany(models.Menu, { through: 'MenuDishes', foreignKey: 'menuId', as: 'menus' });
   }
 }
 

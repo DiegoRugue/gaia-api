@@ -5,9 +5,8 @@ const User = require('../core/user/model');
 const TypeDish = require('../core/typeDish/model');
 const Dish = require('../core/dish/model');
 const Menu = require('../core/menu/model');
-const MenuDish = require('../core/menuDish/model');
 
-const models = [User, TypeDish, Dish, Menu, MenuDish];
+const models = [User, TypeDish, Dish, Menu];
 
 class Database {
   constructor() {
