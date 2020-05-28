@@ -8,7 +8,13 @@ class Menu {
   }
 
   static async addDishesToMenu(req, res) {
-    const menu = await MenuService.addDishesToMenu(req.body);
+    const menu = await MenuService.addDishesToMenu(req.body, req.userId);
+
+    res.ok(menu);
+  }
+
+  static async removeDishesFromMenu(req, res) {
+    const menu = await MenuService.removeDishesFromMenu(req.params, req.userId);
 
     res.ok(menu);
   }

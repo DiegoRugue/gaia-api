@@ -15,7 +15,6 @@ routes.get('/ping', ping);
 
 routes.post('/session', SessionController.create);
 
-
 routes.use(auth);
 
 routes.get('/session', SessionController.refresh);
@@ -33,5 +32,6 @@ routes.get('/types-dishes', TypeDishController.index);
 
 routes.get('/menus', MenuController.index);
 routes.post('/menus', MenuController.addDishesToMenu);
+routes.delete('/menus/:menuId/:dishId', MenuController.removeDishesFromMenu);
 
 module.exports = routes;

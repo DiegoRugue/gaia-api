@@ -4,6 +4,7 @@ const { startOfWeek, endOfWeek, addDays } = require('date-fns');
 const config = require('../../config/database');
 const MenuRepository = require('./repository');
 const DishRepository = require('../dish/repository');
+const verifyAdmin = require('../../helper/verifyAdmin');
 
 class MenuService {
   static async index() {
@@ -20,7 +21,9 @@ class MenuService {
     return menus;
   }
 
-  static async addDishesToMenu(menuData) {
+  static async addDishesToMenu(menuData, userId) {
+    await verifyAdmin(userId);
+
     const sequelize = new Sequelize(config);
     const result = await sequelize.transaction(async transaction => {
       const { id, dishes } = menuData;
@@ -39,6 +42,18 @@ class MenuService {
       return menu;
     });
     return result;
+  }
+
+  static async removeDishesFromMenu({ menuId, dishId }, userId) {
+    await verifyAdmin(userId);
+
+    let menu = await MenuRepository.findById(menuId);
+
+    await menu.removeDish(dishId);
+
+    menu = await MenuRepository.findMenuWithDishById(menuId);
+
+    return menu;
   }
 
   static async createMenusOfWeek(start, end) {
