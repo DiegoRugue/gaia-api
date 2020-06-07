@@ -17,6 +17,10 @@ module.exports = {
         name: 'Sobremesa',
         created_at: new Date(),
       },
+      {
+        name: 'Opção para troca',
+        created_at: new Date(),
+      },
     ], {}),
 
   down: queryInterface => queryInterface.bulkDelete('type_dishes', null, {}),

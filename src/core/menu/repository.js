@@ -40,7 +40,7 @@ class MenuRepository {
     return menu;
   }
 
-  static async findMenuWithDishById(id, transaction = null) {
+  static async findMenuWithDishById(id) {
     const menu = await Menu.findByPk(id, {
       include: [{
         model: Dish,
@@ -56,7 +56,6 @@ class MenuRepository {
         }],
       }],
       attributes: ['id', 'date'],
-      transaction,
     });
     return menu;
   }

@@ -23,8 +23,8 @@ class DishRepository {
     return dishes;
   }
 
-  static async findOrCreate({ name, type: typeDishId }, transaction) {
-    const [dish] = await Dish.findOrCreate({ where: { name, typeDishId }, transaction });
+  static async findOrCreate({ name, type: typeDishId }) {
+    const [dish] = await Dish.findOrCreate({ where: { name, typeDishId } });
 
     return dish;
   }

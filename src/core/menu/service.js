@@ -23,25 +23,20 @@ class MenuService {
 
   static async addDishesToMenu(menuData, userId) {
     await verifyAdmin(userId);
+    const { id, dishes } = menuData;
 
-    const sequelize = new Sequelize(config);
-    const result = await sequelize.transaction(async transaction => {
-      const { id, dishes } = menuData;
+    const dishPromisses = [];
+    dishes.forEach(dish => dishPromisses.push(DishRepository.findOrCreate(dish)));
 
-      const dishPromisses = [];
-      dishes.forEach(dish => dishPromisses.push(DishRepository.findOrCreate(dish)));
+    let menu = await MenuRepository.findById(id);
 
-      let menu = await MenuRepository.findById(id);
+    const dishesMenu = await Promise.all(dishPromisses);
 
-      const dishesMenu = await Promise.all(dishPromisses);
+    await menu.addDish(dishesMenu);
 
-      await menu.addDish(dishesMenu, { transaction });
+    menu = await MenuRepository.findMenuWithDishById(id);
 
-      menu = await MenuRepository.findMenuWithDishById(id, transaction);
-
-      return menu;
-    });
-    return result;
+    return menu;
   }
 
   static async removeDishesFromMenu({ menuId, dishId }, userId) {
