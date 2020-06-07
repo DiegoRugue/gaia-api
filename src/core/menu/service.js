@@ -1,7 +1,5 @@
 /* eslint-disable guard-for-in */
-const Sequelize = require('sequelize');
 const { startOfWeek, endOfWeek, addDays } = require('date-fns');
-const config = require('../../config/database');
 const MenuRepository = require('./repository');
 const DishRepository = require('../dish/repository');
 const verifyAdmin = require('../../helper/verifyAdmin');
@@ -32,6 +30,7 @@ class MenuService {
 
     const dishesMenu = await Promise.all(dishPromisses);
 
+    await menu.setDishes([]);
     await menu.addDish(dishesMenu);
 
     menu = await MenuRepository.findMenuWithDishById(id);
