@@ -55,7 +55,7 @@ class ExchangeRepository {
   }
 
   static async findByMenuUser(menuId, userId) {
-    const { id } = await Exchange.findOne({ where: { menuId, userId }, attributes: ['id'] });
+    const { id } = await Exchange.findOne({ where: { menuId, userId }, attributes: ['id'] }) || {};
     return id;
   }
 
