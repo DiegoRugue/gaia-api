@@ -8,6 +8,7 @@ const SessionController = require('./core/session/controller');
 const DishController = require('./core/dish/controller');
 const TypeDishController = require('./core/typeDish/controller');
 const MenuController = require('./core/menu/controller');
+const ExchangeController = require('./core/exchange/controller');
 
 const routes = new Router();
 
@@ -33,5 +34,9 @@ routes.get('/types-dishes', TypeDishController.index);
 routes.get('/menus', MenuController.index);
 routes.post('/menus', MenuController.addDishesToMenu);
 routes.delete('/menus/:menuId/:dishId', MenuController.removeDishesFromMenu);
+
+routes.get('/exchanges', ExchangeController.index);
+routes.get('/exchanges/:menuId', ExchangeController.show);
+routes.post('/exchanges', ExchangeController.create);
 
 module.exports = routes;

@@ -21,6 +21,12 @@ class MenuService {
 
   static async addDishesToMenu(menuData, userId) {
     await verifyAdmin(userId);
+    const menu = await this.updateMenu(menuData);
+
+    return menu;
+  }
+
+  static async updateMenu(menuData) {
     const { id, dishes } = menuData;
 
     const dishPromisses = [];

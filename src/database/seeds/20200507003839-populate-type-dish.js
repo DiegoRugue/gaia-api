@@ -18,7 +18,7 @@ module.exports = {
         created_at: new Date(),
       },
       {
-        name: 'Opção para troca',
+        name: 'Troca Prato Principal',
         created_at: new Date(),
       },
     ], {}),

@@ -2,6 +2,11 @@ module.exports = {
   up: queryInterface => queryInterface.bulkInsert('dishes',
     [
       {
+        name: 'Almoçar Fora',
+        created_at: new Date(),
+        type_dish_id: 1,
+      },
+      {
         name: 'Frango',
         created_at: new Date(),
         type_dish_id: 1,
