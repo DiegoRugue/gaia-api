@@ -11,7 +11,7 @@ class UserController {
 
   static async show(req, res) {
     const { params: { id }, userId } = req;
-    const user = await UserService.show(id, userId);
+    const user = await UserService.show(userId, id);
 
     res.ok(user);
   }
